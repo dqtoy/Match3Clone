@@ -3,29 +3,12 @@
 public class Cube : MonoBehaviour 
 {
 
-    public enum Color 
+    public enum CubeColor 
     {
         Blue, Green, Red, Yellow
     }
 
-    [SerializeField]
-    Color m_color;
+    public CubeColor MyColor;
 
-    public Color CubeColor 
-    { 
-        get
-        {
-            return m_color;
-        } 
-    }
 
-	void Start() 
-	{
-		
-	}
-	
-	void Update() 
-	{
-		
-	}
 }
