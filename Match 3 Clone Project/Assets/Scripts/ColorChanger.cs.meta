@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 4a9c39a6d3c964818959a2259536a125
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - blueColorTexture: {fileID: 2800000, guid: 0d646ec84e2454a87a9fc01cc7b1d83b, type: 3}
+  - greenColorTexture: {fileID: 2800000, guid: 842de5983c0174a7eb2a615f958e713b, type: 3}
+  - redColorTexture: {fileID: 2800000, guid: 5261dad6be1ac4db5be95d883453726b, type: 3}
+  - yellowColorTexture: {fileID: 2800000, guid: cdea4a67bb9594e31999e123b7948bc8,
+      type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

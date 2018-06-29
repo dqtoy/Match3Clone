@@ -12,14 +12,7 @@ public class BoardController : MonoBehaviour
     uint width;
     [SerializeField]
     uint height;
-    [SerializeField]
-    Material blueMaterial;
-    [SerializeField]
-    Material greenMaterial;
-    [SerializeField]
-    Material redMaterial;
-    [SerializeField]
-    Material yellowMaterial;
+
 
 
     Cube[,] grid;
@@ -39,6 +32,13 @@ public class BoardController : MonoBehaviour
     void Start()
     {
         InitCubes();
+        foreach(Cube cube in grid)
+        {
+            if(GetNeighbourCubes(cube).Count > 1)
+            {
+                cube.ShapeDrawer.SetShape(ShapeDrawer.Shape.Rocket);
+            }
+        }
     }
 
     void Update()
@@ -78,33 +78,11 @@ public class BoardController : MonoBehaviour
                 GameObject cubeObj = Instantiate(cubePrefab, cubePos, Quaternion.identity);
                 cubeObj.transform.SetParent(newRow.transform);
 
-                grid[row, col] = cubeObj.GetComponent<Cube>();
+                Cube cube = cubeObj.GetComponent<Cube>();
+                grid[row, col] = cube;
+                cube.ColorChanger.AssignRandomColor();
 
-                int random = Random.Range(0, 4);
-                Material mat = null;
-                Cube.CubeColor cubeColor = Cube.CubeColor.Blue;
-
-                switch(random)
-                {
-                    case 0:
-                        mat = blueMaterial;
-                        cubeColor = Cube.CubeColor.Blue;
-                        break;
-                    case 1:
-                        mat = redMaterial;
-                        cubeColor = Cube.CubeColor.Red;
-                        break;
-                    case 2:
-                        mat = greenMaterial;
-                        cubeColor = Cube.CubeColor.Green;
-                        break;
-                    case 3:
-                        mat = yellowMaterial;
-                        cubeColor = Cube.CubeColor.Yellow;
-                        break;
-                }
-                grid[row, col].MyColor = cubeColor;
-                cubeObj.GetComponent<MeshRenderer>().material = mat;
+                cube.ShapeDrawer.SetShape(ShapeDrawer.Shape.TearDrop);
             }
         }
 
@@ -138,46 +116,28 @@ public class BoardController : MonoBehaviour
 
         memoVisited[yCoord, xCoord] = true;
 
-        // Check right
-        if(xCoord + 1 < grid.GetLength(1))
+        for(int i = -1; i < 2; i++)
         {
-            if(!memoVisited[yCoord, xCoord + 1] && grid[yCoord, xCoord + 1].MyColor == cube.MyColor)
+            for(int j = -1; j < 2; j++)
             {
-                memoNeighbours.Add(grid[yCoord, xCoord + 1]);
-                GetNeighbourCubesHelper(grid[yCoord, xCoord + 1], ref memoNeighbours, ref memoVisited);
-            }
-        }
-           
+                if(Mathf.Abs(i + j) != 1) continue;
 
-        // Check left
-        if(xCoord - 1 >= 0)
-        {
-            if(!memoVisited[yCoord, xCoord - 1] && grid[yCoord, xCoord - 1].MyColor == cube.MyColor)
-            {
-                memoNeighbours.Add(grid[yCoord, xCoord - 1]);
-                GetNeighbourCubesHelper(grid[yCoord, xCoord - 1], ref memoNeighbours, ref memoVisited);
+                if(IsInsideGrid(xCoord + i, yCoord + j))
+                {
+                    if(!memoVisited[yCoord + j, xCoord + i] && grid[yCoord + j, xCoord + i].ColorChanger.cubeColor
+                        == cube.ColorChanger.cubeColor)
+                    {
+                        memoNeighbours.Add(grid[yCoord + j, xCoord + i]);
+                        GetNeighbourCubesHelper(grid[yCoord + j, xCoord + i], ref memoNeighbours, ref memoVisited);
+                    }
+                }
             }
         }
+    }
 
-        // Check top
-        if(yCoord - 1 >= 0)
-        {
-            if(!memoVisited[yCoord - 1, xCoord] && grid[yCoord - 1, xCoord].MyColor == cube.MyColor)
-            {
-                memoNeighbours.Add(grid[yCoord - 1, xCoord]);
-                GetNeighbourCubesHelper(grid[yCoord - 1, xCoord], ref memoNeighbours, ref memoVisited);
-            }
-        }
-
-        // Check bottom
-        if(yCoord + 1 < grid.GetLength(0))
-        {
-            if(!memoVisited[yCoord + 1, xCoord] && grid[yCoord + 1, xCoord].MyColor == cube.MyColor)
-            {
-                memoNeighbours.Add(grid[yCoord + 1, xCoord]);
-                GetNeighbourCubesHelper(grid[yCoord + 1, xCoord], ref memoNeighbours, ref memoVisited);
-            }
-        }
+    bool IsInsideGrid(int x, int y)
+    {
+        return (x >= 0 && x < grid.GetLength(1) && y >= 0 && y < grid.GetLength(0));
     }
 
     Vector2 GetCubeCoordinates(Cube cube)

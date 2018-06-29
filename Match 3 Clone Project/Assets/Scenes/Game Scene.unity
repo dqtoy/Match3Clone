@@ -184,7 +184,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 19.13, y: 0, z: 0}
 --- !u!1 &690328024
 GameObject:
@@ -213,7 +213,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &690328026
 MonoBehaviour:
@@ -229,10 +229,6 @@ MonoBehaviour:
   cubePrefab: {fileID: 1519658181210298, guid: 638c55ac0faa54ebc9a30e5ae071a8a2, type: 2}
   width: 7
   height: 6
-  blueMaterial: {fileID: 2100000, guid: 6b3ddb555770a4eac85a9fafff9815e2, type: 2}
-  greenMaterial: {fileID: 2100000, guid: 5b0018a167e6f46ef8bd2af4a41f61b5, type: 2}
-  redMaterial: {fileID: 2100000, guid: a29e2908fc29d4230a687670041a022d, type: 2}
-  yellowMaterial: {fileID: 2100000, guid: 91f991e6793c142ae8d639c67de790ce, type: 2}
 --- !u!1 &1052781705
 GameObject:
   m_ObjectHideFlags: 0
@@ -316,7 +312,7 @@ Transform:
   m_LocalScale: {x: 7.5937495, y: 0.09999961, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1995675988
 GameObject:
@@ -344,7 +340,7 @@ Light:
   serializedVersion: 8
   m_Type: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 1
+  m_Intensity: 1.55
   m_Range: 10
   m_SpotAngle: 30
   m_CookieSize: 10
@@ -376,10 +372,10 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1995675988}
-  m_LocalRotation: {x: 0.24022798, y: -0.00000019371507, z: 0.00000015646218, w: 0.97071654}
-  m_LocalPosition: {x: 0, y: 7.3333716, z: -20.001842}
+  m_LocalRotation: {x: 0.50580037, y: 0.027164333, z: -0.015937839, w: 0.8620755}
+  m_LocalPosition: {x: -1.3708162, y: 14.177752, z: -3.418765}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 25.192001, y: -20.804, z: 14.672001}

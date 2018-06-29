@@ -1,14 +1,19 @@
 ﻿using UnityEngine;
 
+[RequireComponent(typeof(ColorChanger), typeof(ShapeDrawer))]
 public class Cube : MonoBehaviour 
 {
+    [HideInInspector]
+    public ColorChanger ColorChanger { get; private set; }
 
-    public enum CubeColor 
+    [HideInInspector]
+    public ShapeDrawer ShapeDrawer { get; private set; }
+
+    void Awake()
     {
-        Blue, Green, Red, Yellow
+        ColorChanger = GetComponent<ColorChanger>();
+        ShapeDrawer = GetComponent<ShapeDrawer>();
+        transform.Rotate(0, 180, 0);
     }
-
-    public CubeColor MyColor;
-
 
 }

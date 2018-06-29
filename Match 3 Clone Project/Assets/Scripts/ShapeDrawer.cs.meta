@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: 38eec34b61a24490eb6f4f4f7da3c99e
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - teardropNormalMap: {fileID: 2800000, guid: d456a3f9f70454199949e15f38de41ff, type: 3}
+  - rocketNormalMap: {fileID: 2800000, guid: 00dcf38cf82d845e09044e71f0789a10, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
