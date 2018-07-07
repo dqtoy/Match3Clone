@@ -27,7 +27,7 @@ GameObject:
   - component: {fileID: 114775653540154362}
   - component: {fileID: 114319329495607824}
   m_Layer: 0
-  m_Name: Blue Cube
+  m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -40,7 +40,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1519658181210298}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.3198041, y: -0.50365496, z: 0}
+  m_LocalPosition: {x: 0.6025992, y: -1.7973857, z: -0.32788563}
   m_LocalScale: {x: 100, y: 100, z: 100}
   m_Children: []
   m_Father: {fileID: 0}
@@ -97,11 +97,11 @@ Rigidbody:
   serializedVersion: 2
   m_Mass: 1
   m_Drag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 120
+  m_Constraints: 122
   m_CollisionDetection: 0
 --- !u!65 &65341655279907646
 BoxCollider:
@@ -109,11 +109,11 @@ BoxCollider:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1519658181210298}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: ee4bce078b77542bda9d4b621909ed94, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.01, y: 0.01, z: 0.01}
+  m_Size: {x: 0.009, y: 0.01, z: 0.009}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &114319329495607824
 MonoBehaviour:
@@ -142,6 +142,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23de118b4e3604204803ca39ea0f7bf3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GridPosition:
+    m_X: 0
+    m_Y: 0
 --- !u!114 &114775653540154362
 MonoBehaviour:
   m_ObjectHideFlags: 1
