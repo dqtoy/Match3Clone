@@ -21,12 +21,12 @@ GameObject:
   - component: {fileID: 4580432412246512}
   - component: {fileID: 114566884979565368}
   m_Layer: 0
-  m_Name: Grid
+  m_Name: Board
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4580432412246512
 Transform:
   m_ObjectHideFlags: 1
@@ -52,5 +52,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cubePrefab: {fileID: 1519658181210298, guid: 638c55ac0faa54ebc9a30e5ae071a8a2, type: 2}
+  bombPrefab: {fileID: 1747476985432570, guid: 04264e205b95542ebbefb3b3bc68f682, type: 2}
   gridWidth: 6
   gridHeight: 7

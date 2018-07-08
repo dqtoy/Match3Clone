@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [RequireComponent(typeof(ColorChanger), typeof(ShapeDrawer))]
-public class Cube : MonoBehaviour 
+public class Cube : BoardObject 
 {
     [HideInInspector]
     public ColorChanger ColorChanger { get; private set; }
@@ -9,7 +9,6 @@ public class Cube : MonoBehaviour
     [HideInInspector]
     public ShapeDrawer ShapeDrawer { get; private set; }
 
-    public GridCoordinate GridPosition;
 
     void Awake()
     {
