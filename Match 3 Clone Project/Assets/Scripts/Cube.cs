@@ -16,5 +16,6 @@ public class Cube : BoardObject
         ShapeDrawer = GetComponent<ShapeDrawer>();
         transform.Rotate(0, 180, 0);
     }
+
 }
 

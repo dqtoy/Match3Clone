@@ -168,7 +168,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4494307464167752, guid: e56edc25139874f2ba0616fc2466878f, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -6
+      value: -4
       objectReference: {fileID: 0}
     - target: {fileID: 4494307464167752, guid: e56edc25139874f2ba0616fc2466878f, type: 2}
       propertyPath: m_LocalPosition.z
@@ -194,12 +194,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 65506320475402080, guid: e56edc25139874f2ba0616fc2466878f,
-        type: 2}
-      propertyPath: m_Material
-      value: 
-      objectReference: {fileID: 13400000, guid: ee4bce078b77542bda9d4b621909ed94,
-        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e56edc25139874f2ba0616fc2466878f, type: 2}
   m_IsPrefabParent: 0
@@ -242,10 +236,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 1461053489580938, guid: 19fe67decc701477a9b4dd74aa9b54f3, type: 2}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 19fe67decc701477a9b4dd74aa9b54f3, type: 2}
   m_IsPrefabParent: 0
@@ -262,7 +252,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4935533795470430, guid: efce0842048a741c49da0d5014fe02d6, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 2.06
+      value: 4.06
       objectReference: {fileID: 0}
     - target: {fileID: 4935533795470430, guid: efce0842048a741c49da0d5014fe02d6, type: 2}
       propertyPath: m_LocalPosition.z
@@ -287,10 +277,6 @@ Prefab:
     - target: {fileID: 4935533795470430, guid: efce0842048a741c49da0d5014fe02d6, type: 2}
       propertyPath: m_RootOrder
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4935533795470430, guid: efce0842048a741c49da0d5014fe02d6, type: 2}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: efce0842048a741c49da0d5014fe02d6, type: 2}

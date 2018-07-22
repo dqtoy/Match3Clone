@@ -31,16 +31,16 @@ public struct GridCoordinate
         }
     }
 
-    public Vector2 pos
+    public Vector2Int pos
     {
         get
         {
-            return new Vector2(m_X, m_Y);
+            return new Vector2Int(m_X, m_Y);
         }
         set
         {
-            m_X = (int)value.x;
-            m_Y = (int)value.y;
+            m_X = value.x;
+            m_Y = value.y;
         }
     }
 }

@@ -1,34 +1,24 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class BoardController : MonoBehaviour
+public class BoardController : Singleton<BoardController>
 {
+    
+    private static readonly int ROCKET_MATCH_COUNT = 5;
+    private static readonly int BOMB_MATCH_COUNT = 7;
 
-    public static BoardController Instance;
 
     [SerializeField] GameObject cubePrefab;
     [SerializeField] GameObject bombPrefab;
+    [SerializeField] GameObject rocketPrefab;
 
     [SerializeField] int gridWidth;
     [SerializeField] int gridHeight;
-
-    private static readonly int ROCKET_MATCH_COUNT = 5;
 
 
     BoardObject[,] grid;
     GameObject[] columns;
 
-    void Awake()
-    {
-        if(Instance == null)
-        {
-            Instance = this;
-        }
-        else if(Instance != this)
-        {
-            Destroy(gameObject);
-        }
-    }
 
     void Start()
     {
@@ -41,19 +31,26 @@ public class BoardController : MonoBehaviour
         if(Input.GetMouseButtonDown(0))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-            bool gotHit = Physics.Raycast(ray, out hit, 100);
+            RaycastHit hitInfo;
+            bool gotHit = Physics.Raycast(ray, out hitInfo, 50);
 
             if(gotHit)
             {
-                BoardObject hitObject = hit.collider.GetComponent<BoardObject>();
+                BoardObject hitObject = hitInfo.collider.GetComponent<BoardObject>();
                 if(hitObject is Cube)
                 {
                     PopCube((Cube) hitObject);
+                    SetShapesOfMatchingGroups();
                 }
                 else if(hitObject is Bomb)
                 {
                     ExploadBomb((Bomb) hitObject);
+                    SetShapesOfMatchingGroups();
+                }
+                else if(hitObject is Rocket)
+                {
+                    FireRocket((Rocket) hitObject);
+                    SetShapesOfMatchingGroups();
                 }
             }
         }
@@ -64,8 +61,8 @@ public class BoardController : MonoBehaviour
         grid = new BoardObject[gridWidth, gridHeight];
         columns = new GameObject[gridWidth];
 
+        int[] cubesToSpawnOnColumn = new int[gridWidth];
         Vector3 colPos;
-        Vector3 cubePos;
 
         for(int col = 0; col < gridWidth; col++)
         {
@@ -74,23 +71,9 @@ public class BoardController : MonoBehaviour
             colPos = transform.position + Vector3.left * ((gridWidth - 1) / 2f - col);
             columns[col].transform.position = colPos;
 
-            
-            for(int row = 0; row < gridHeight; row++)
-            {
-                cubePos = colPos + Vector3.down * ((gridHeight - 1) / 2f - row);
-                GameObject cubeObj = Instantiate(cubePrefab, cubePos, Quaternion.identity);
-                cubeObj.transform.SetParent(columns[col].transform);
-                cubeObj.transform.SetAsLastSibling();
-
-                Cube cube = cubeObj.GetComponent<Cube>();
-                grid[col, row] = cube;
-                cube.GridPosition.pos = new Vector2(col, row);
-
-                cube.ColorChanger.AssignRandomColor();
-                cube.ShapeDrawer.SetShape(ShapeDrawer.Shape.TearDrop);
-            }
+            cubesToSpawnOnColumn[col] = gridHeight;
         }
-
+        SpawnNewCubesOnColumns(cubesToSpawnOnColumn);
     }
 
     void PopCube(Cube cube)
@@ -103,15 +86,19 @@ public class BoardController : MonoBehaviour
         int[] removedCubes = new int[gridWidth];
 
         // Remove this cube
-        if(matchedCubeCount < ROCKET_MATCH_COUNT - 1)
+        if(matchedCubeCount + 1 >= BOMB_MATCH_COUNT)
+        {
+            SwapCubeWithBomb(cube);
+
+        }
+        else if(matchedCubeCount + 1 >= ROCKET_MATCH_COUNT)
+        {
+            SwapCubeWithRocket(cube);
+        }
+        else
         {
             removedCubes[cube.GridPosition.x]++;
             RemoveSlotFromGrid(cube);
-        }
-        // Turn it into a bomb
-        else
-        {
-            SwapCubeWithBomb(cube);
         }
 
         foreach(Cube _cube in matchingCubes)
@@ -119,22 +106,31 @@ public class BoardController : MonoBehaviour
             removedCubes[_cube.GridPosition.x]++;
             RemoveSlotFromGrid(_cube);
         }
-
         SpawnNewCubesOnColumns(removedCubes);
-        SetShapesOfMatchingGroups();
+
     }
 
     void SwapCubeWithBomb(Cube cube)
     {
-        Debug.Log("Swap with bomb");
-        GameObject bombObj = Instantiate(bombPrefab
-                                         ,cube.transform.position, Quaternion.identity, cube.transform.parent);
+        GameObject bombObj = Instantiate(bombPrefab,cube.transform.position, Quaternion.identity);
         Bomb bomb = bombObj.GetComponent<Bomb>();
         bomb.GridPosition = cube.GridPosition;
+        bomb.transform.SetParent(cube.transform.parent);
         bomb.transform.SetSiblingIndex(cube.transform.GetSiblingIndex());
 
-
         grid[cube.GridPosition.x, cube.GridPosition.y] = bomb;
+        Destroy(cube.gameObject);
+    }
+
+    void SwapCubeWithRocket(Cube cube)
+    {
+        GameObject rocketObj = Instantiate(rocketPrefab, cube.transform.position, Quaternion.identity);
+        Rocket rocket = rocketObj.GetComponent<Rocket>();
+        rocket.GridPosition = cube.GridPosition;
+        rocket.transform.SetParent(cube.transform.parent);
+        rocket.transform.SetSiblingIndex(cube.transform.GetSiblingIndex());
+
+        grid[cube.GridPosition.x, cube.GridPosition.y] = rocket;
         Destroy(cube.gameObject);
     }
 
@@ -147,12 +143,11 @@ public class BoardController : MonoBehaviour
         {
             for(int yCoordDelta = -1; yCoordDelta < 2; yCoordDelta++)
             {
-                int xCoord = bomb.GridPosition.x + xCoordDelta;
-                int yCoord = bomb.GridPosition.y + yCoordDelta;
-                if(IsInsideGrid(xCoord, yCoord))
+                Vector2Int neigborPos = bomb.GridPosition.pos + new Vector2Int(xCoordDelta, yCoordDelta);
+                if(IsInsideGrid(neigborPos))
                 {
-                    removedSlots[xCoord]++;
-                    boardObjectsToRemove.Add(grid[xCoord, yCoord]);
+                    removedSlots[neigborPos.x]++;
+                    boardObjectsToRemove.Add(grid[neigborPos.x, neigborPos.y]);
                 }
             }
         }
@@ -160,8 +155,17 @@ public class BoardController : MonoBehaviour
         {
             RemoveSlotFromGrid(obj);
         }
+
         SpawnNewCubesOnColumns(removedSlots);
-        SetShapesOfMatchingGroups();
+    }
+
+    void FireRocket(Rocket rocket)
+    {
+        RemoveSlotFromGrid(rocket);
+        rocket.Fire();
+        int[] cubesToSpawnOnColumns = new int[gridWidth];
+        cubesToSpawnOnColumns[rocket.GridPosition.x]++;
+        SpawnNewCubesOnColumns(cubesToSpawnOnColumns);
     }
 
     void RemoveSlotFromGrid(BoardObject objectToRemove)
@@ -223,29 +227,28 @@ public class BoardController : MonoBehaviour
 
     void GetMatchingNeighborsRecursive(Cube cube, ref List<Cube> memoNeighbours, ref bool[,] memoVisited)
     {
+        
+        memoVisited[cube.GridPosition.x, cube.GridPosition.y] = true;
 
-        int yCoord = cube.GridPosition.y;
-        int xCoord = cube.GridPosition.x;
-
-        memoVisited[xCoord, yCoord] = true;
-
-        for(int i = -1; i < 2; i++)
+        for(int xDelta = -1; xDelta < 2; xDelta++)
         {
-            for(int j = -1; j < 2; j++)
+            for(int yDelta = -1; yDelta < 2; yDelta++)
             {
-                if(Mathf.Abs(i + j) != 1) continue;
+                // We only need to check 4-neighbors
+                if(Mathf.Abs(xDelta + yDelta) != 1) continue;
 
-                if(IsInsideGrid(xCoord + i, yCoord + j))
+                Vector2Int neighborPos = cube.GridPosition.pos + new Vector2Int(xDelta, yDelta);
+
+                if(!IsInsideGrid(neighborPos.x, neighborPos.y)) continue;
+
+                Cube cubeBeingVisited = grid[neighborPos.x, neighborPos.y] as Cube;
+                if(!memoVisited[neighborPos.x, neighborPos.y]
+                   && cubeBeingVisited != null
+                   && cubeBeingVisited.ColorChanger.cubeColor
+                    == cube.ColorChanger.cubeColor)
                 {
-                    Cube cubeBeingVisited = grid[xCoord + i, yCoord + j] as Cube;
-                    if(!memoVisited[xCoord + i, yCoord + j]
-                       && cubeBeingVisited != null
-                       && cubeBeingVisited.ColorChanger.cubeColor
-                        == cube.ColorChanger.cubeColor)
-                    {
-                        memoNeighbours.Add(cubeBeingVisited);
-                        GetMatchingNeighborsRecursive(cubeBeingVisited, ref memoNeighbours, ref memoVisited);
-                    }
+                    memoNeighbours.Add(cubeBeingVisited);
+                    GetMatchingNeighborsRecursive(cubeBeingVisited, ref memoNeighbours, ref memoVisited);
                 }
             }
         }
@@ -256,19 +259,20 @@ public class BoardController : MonoBehaviour
         for(int i = 0; i < cubeAmounts.Length; i++)
         {
             int cubeNumToInsantiate = cubeAmounts[i];
-            Vector3 colPos = transform.position + Vector3.left * ((gridWidth - 1) / 2f - i);
+            Vector3 colPos = columns[i].transform.position;
             Vector3 newCubePos;
+            int heightOffset = 2;
 
             for(int j = 0; j < cubeNumToInsantiate; j++)
             {
-                newCubePos = colPos + Vector3.up * ((gridHeight - 1) / 2f + j);
+                newCubePos = colPos + Vector3.up * ((gridHeight - 1) / 2f + j + heightOffset);
                 GameObject cubeObj = Instantiate(cubePrefab, newCubePos, Quaternion.identity);
                 cubeObj.transform.SetParent(columns[i].transform);
                 cubeObj.transform.SetAsLastSibling();
 
                 Cube cube = cubeObj.GetComponent<Cube>();
                 grid[i, gridHeight - cubeNumToInsantiate + j] = cube;
-                cube.GridPosition.pos = new Vector2(i, gridHeight - cubeNumToInsantiate + j);
+                cube.GridPosition.pos = new Vector2Int(i, gridHeight - cubeNumToInsantiate + j);
 
                 cube.ColorChanger.AssignRandomColor();
                 cube.ShapeDrawer.SetShape(ShapeDrawer.Shape.TearDrop);
@@ -276,8 +280,36 @@ public class BoardController : MonoBehaviour
         }
     }
 
+    void SpawnCubeOnColumn(int columnIndex)
+    {
+        Vector3 colPos = columns[columnIndex].transform.position;
+        int heightOffset = 2;
+        Vector3 newCubePos = colPos + Vector3.up * ((gridHeight - 1) / 2f + heightOffset);
+        GameObject cubeObj = Instantiate(cubePrefab, newCubePos, Quaternion.identity);
+        cubeObj.transform.SetParent(columns[columnIndex].transform);
+        cubeObj.transform.SetAsLastSibling();
+
+        Cube cube = cubeObj.GetComponent<Cube>();
+        grid[columnIndex, gridHeight - 1] = cube;
+        cube.GridPosition.pos = new Vector2Int(columnIndex, gridHeight - 1);
+
+        cube.ColorChanger.AssignRandomColor();
+        cube.ShapeDrawer.SetShape(ShapeDrawer.Shape.TearDrop);
+    }
+
+    public void DestroySingleCube(Cube cube)
+    {
+        RemoveSlotFromGrid(cube);
+        SpawnCubeOnColumn(cube.GridPosition.x);
+    }
+
     bool IsInsideGrid(int x, int y)
     {
         return (x >= 0 && x < gridWidth && y >= 0 && y < gridHeight);
+    }
+
+    bool IsInsideGrid(Vector2Int gridPos)
+    {
+        return IsInsideGrid(gridPos.x, gridPos.y);
     }
 }
