@@ -20,7 +20,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4963300052252146}
   - component: {fileID: 65355960138096306}
-  - component: {fileID: 114148991434622086}
   m_Layer: 0
   m_Name: Right Half
   m_TagString: Untagged
@@ -38,7 +37,6 @@ GameObject:
   - component: {fileID: 4029628179789406}
   - component: {fileID: 65291180997332746}
   - component: {fileID: 54259782676238056}
-  - component: {fileID: 114883258651307094}
   m_Layer: 0
   m_Name: Rocket
   m_TagString: Untagged
@@ -55,7 +53,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4972918271859028}
   - component: {fileID: 65783229759055094}
-  - component: {fileID: 114813160886239798}
   m_Layer: 0
   m_Name: Left Half
   m_TagString: Untagged
@@ -301,43 +298,3 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.37163728, y: 0.6926073, z: 0.58565456}
   m_Center: {x: -0.007055253, y: 0, z: 0}
---- !u!114 &114148991434622086
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1047938830757598}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 320986dc55a20445b81f81a4e5b076e3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &114813160886239798
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1736101424040980}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 320986dc55a20445b81f81a4e5b076e3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &114883258651307094
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1560919504429222}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c0631031729440149255b6826ef5fd7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GridPosition:
-    m_X: 0
-    m_Y: 0
-  leftHalf: {fileID: 1736101424040980}
-  rightHalf: {fileID: 1047938830757598}
-  rocketSpeed: 15
-  rocketLifeTime: 2
