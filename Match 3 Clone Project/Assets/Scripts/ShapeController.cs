@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 
-public class ShapeDrawer : MonoBehaviour 
+/// <summary>
+/// Controls the shape of a cube by changing normal map of the material.
+/// </summary>
+public class ShapeController : MonoBehaviour 
 {
 
     public enum Shape

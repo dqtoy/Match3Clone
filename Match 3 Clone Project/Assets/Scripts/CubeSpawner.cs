@@ -1,11 +1,18 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Singleton Spawner class which is responsible for spawning new cubes.
+/// </summary>
 public class CubeSpawner : Singleton<CubeSpawner>
 {
     static readonly float HEIGHT_OFFSET = 1.75f;
 
     [SerializeField] GameObject cubePrefab;
 
+    /// <summary>
+    /// Check if there are cubes needed to be spawn, spawn them if there are.
+    /// </summary>
+    /// <param name="board">Board.</param>
     public void SpawnNeededCubes(ref BoardObject[,] board)
     {
         // Determine cubes that have to be spawned.
@@ -16,6 +23,7 @@ public class CubeSpawner : Singleton<CubeSpawner>
 
         for(int x = 0; x < boardWidth; x++)
         {
+            // Check to column from top to bottom, mark if neededs
             for(int y = boardHeight - 1; y >= 0; y--)
             {
                 if(board[x,y] == null)
@@ -48,6 +56,12 @@ public class CubeSpawner : Singleton<CubeSpawner>
         }
     }
 
+    /// <summary>
+    /// Spawns a cube and randomly color it.
+    /// </summary>
+    /// <param name="worldPos">World position.</param>
+    /// <param name="gridPos">Grid position.</param>
+    /// <param name="parent">Parent transform.</param>
     void SpawnRandomCube(Vector3 worldPos, Vector2Int gridPos, Transform parent)
     {
         GameObject cubeObj = Instantiate(cubePrefab, worldPos, Quaternion.identity);
@@ -60,6 +74,6 @@ public class CubeSpawner : Singleton<CubeSpawner>
         BoardController.Instance.AssignToBoard(cube);
 
         cube.ColorChanger.AssignRandomColor();
-        cube.ShapeDrawer.SetShape(ShapeDrawer.Shape.TearDrop);
+        cube.ShapeDrawer.SetShape(ShapeController.Shape.TearDrop);
     }
 }

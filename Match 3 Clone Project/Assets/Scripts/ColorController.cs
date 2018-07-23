@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 
-public class ColorChanger : MonoBehaviour 
+/// <summary>
+/// Controls the color of the material that this script is attached to.
+/// </summary>
+public class ColorController : MonoBehaviour 
 {
 
     public enum CubeColor
@@ -28,6 +31,10 @@ public class ColorChanger : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// Changes the color of the material that this instance has.
+    /// </summary>
+    /// <param name="color">Color.</param>
     public void SetColor(CubeColor color)
     {
         Texture2D colorTexture = null;
@@ -52,6 +59,9 @@ public class ColorChanger : MonoBehaviour
         m_Renderer.material.SetTexture("_MainTex", colorTexture);
     }
 
+    /// <summary>
+    /// Randomly changes the color of the material that this instance has.
+    /// </summary>
     public void AssignRandomColor()
     {
         int randomIndex = Random.Range(0, (int) CubeColor.COUNT);

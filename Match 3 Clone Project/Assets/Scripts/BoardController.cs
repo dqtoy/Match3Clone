@@ -2,8 +2,12 @@
 using System.Collections.Generic;
 using System;
 
+/// <summary>
+/// Class that is responsible for events happening on game board.
+/// </summary>
 public class BoardController : Singleton<BoardController>
 {
+    public static readonly int MIN_MATCH_COUNT = 2;
     public static readonly int ROCKET_MATCH_COUNT = 5;
     public static readonly int BOMB_MATCH_COUNT = 7;
     public static readonly int DISCOBALL_MATCH_COUNT = 9;
@@ -12,13 +16,12 @@ public class BoardController : Singleton<BoardController>
     [SerializeField] int boardWidth;
     [SerializeField] int boardHeight;
 
-    [HideInInspector]
-    public GameObject[] Columns;
+    [HideInInspector] public GameObject[] Columns;
+
 
     BoardObject[,] board;
-
-
     bool isInputEnabled;
+
 
     public override void Awake()
     {
@@ -44,15 +47,19 @@ public class BoardController : Singleton<BoardController>
                 BoardObject hitObject = hitInfo.collider.GetComponent<BoardObject>();
                 if(hitObject != null)
                 {
+                    // Input has to be disabled until all the objects are settled on board
                     isInputEnabled = false;
-                    SetPositionLockOfAllBoardObjects(true);
 
+                    SetPositionLockOfAllBoardObjects(true);
                     hitObject.HandleClick();
                 }
             }
         }    
     }
 
+    /// <summary>
+    /// Initializes necessary containers for board objects.
+    /// </summary>
     void InitBoard()
     {
         board = new BoardObject[boardWidth, boardHeight];
@@ -68,6 +75,10 @@ public class BoardController : Singleton<BoardController>
         }
     }
 
+    /// <summary>
+    /// Lock/Unlock all the board objects' position which are currently on the board.
+    /// </summary>
+    /// <param name="isLocked">If set to <c>true</c> locks the position.</param>
     void SetPositionLockOfAllBoardObjects(bool isLocked)
     {
         foreach(BoardObject boardObj in board)
@@ -79,6 +90,9 @@ public class BoardController : Singleton<BoardController>
         }
     }
 
+    /// <summary>
+    /// Function that tells the BoardController that all destructions and events are done.
+    /// </summary>
     public void OnClickHandled()
     {
         UpdateGridPositionsOfFallingObjects();
@@ -88,20 +102,29 @@ public class BoardController : Singleton<BoardController>
 
         // TODO: Wait for cubes to settle
 
+        // Changes happened on the board, shapes must be updated.
         SetShapesOfMatchingGroups();
-
         isInputEnabled = true;
     }
 
+    /// <summary>
+    /// Assigns <paramref name="boardObj"/> to board.
+    /// </summary>
+    /// <param name="boardObj">Board object to be assigned.</param>
     public void AssignToBoard(BoardObject boardObj)
     {
         board[boardObj.GridPosition.x, boardObj.GridPosition.y] = boardObj;
     }
 
+    /// <summary>
+    /// Upon destruction of any BoardObject, sets the corresponding slot in board to null.
+    /// </summary>
+    /// <param name="boardObject">Board object.</param>
     public void NotifyDestroyedObject(BoardObject boardObject)
     {
         board[boardObject.GridPosition.x, boardObject.GridPosition.y] = null;
     }
+
 
     void SetShapesOfMatchingGroups()
     {
@@ -110,29 +133,33 @@ public class BoardController : Singleton<BoardController>
         foreach(BoardObject boardObject in board)
         {
             Cube cube = boardObject as Cube;
+            // If this object is not a cube, or visited before, we don't need to check it.
             if(cube == null || visited[cube.GridPosition.x, cube.GridPosition.y]) continue;
 
             visited[cube.GridPosition.x, cube.GridPosition.y] = true;
 
             List<Cube> matchingCubes = GetMatchingCubes(cube);
 
+            // TODO: Change this part after adding new normal maps for bomb and disco ball shapes.
             if(matchingCubes.Count + 1 >= ROCKET_MATCH_COUNT)
             {
                 foreach(Cube matchingCube in matchingCubes)
                 {
                     visited[matchingCube.GridPosition.x, matchingCube.GridPosition.y] = true;
-                    matchingCube.ShapeDrawer.SetShape(ShapeDrawer.Shape.Rocket);
+                    matchingCube.ShapeDrawer.SetShape(ShapeController.Shape.Rocket);
                 }
-                cube.ShapeDrawer.SetShape(ShapeDrawer.Shape.Rocket);
+                cube.ShapeDrawer.SetShape(ShapeController.Shape.Rocket);
             }
             else
             {
-                cube.ShapeDrawer.SetShape(ShapeDrawer.Shape.TearDrop);
+                cube.ShapeDrawer.SetShape(ShapeController.Shape.TearDrop);
             }
         }
     }
 
-
+    /// <summary>
+    /// Iterates all the BoardObjects, lets them fall if there is nothing below them.
+    /// </summary>
     void UpdateGridPositionsOfFallingObjects()
     {
         for(int x = 0; x < boardWidth; x++)
@@ -164,6 +191,11 @@ public class BoardController : Singleton<BoardController>
         }
     }
 
+    /// <summary>
+    /// Wrapper function for match detection algorithm.
+    /// </summary>
+    /// <returns> matching cubes with the given one.</returns>
+    /// <param name="cube">Current cube.</param>
     public List<Cube> GetMatchingCubes(Cube cube)
     {
         List<Cube> neighbours = new List<Cube>();
@@ -173,9 +205,11 @@ public class BoardController : Singleton<BoardController>
         return neighbours;
     }
 
+    /// <summary>
+    /// Actual Flood and Fill Algorithm implementation.
+    /// </summary>
     void GetMatchingNeighborsRecursive(Cube cube, ref List<Cube> memoNeighbours, ref bool[,] memoVisited)
     {
-
         memoVisited[cube.GridPosition.x, cube.GridPosition.y] = true;
 
         for(int xDelta = -1; xDelta < 2; xDelta++)

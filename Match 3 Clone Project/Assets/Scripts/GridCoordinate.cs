@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Helper class to keep coordinates of board objects.
+/// </summary>
 [System.Serializable]
 public struct GridCoordinate
 {

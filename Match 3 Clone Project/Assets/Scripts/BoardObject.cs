@@ -6,6 +6,9 @@ public class BoardObject : MonoBehaviour
     public GridCoordinate GridPosition;
     public bool IsMoveable = true;
 
+    /*
+     * These handlers must be set by derived classes, otherwise they will use default implementation. 
+     */
     protected IOnClickHandler clickHandler;
     protected IOnHitHandler hitHandler;
     protected IOnNearPopHandler nearPopHandler;
@@ -22,7 +25,9 @@ public class BoardObject : MonoBehaviour
         }
     }
 
-
+    /// <summary>
+    /// Handles user click, happening on this board object.
+    /// </summary>
     public void HandleClick()
     {
         if(clickHandler != null)
@@ -35,14 +40,24 @@ public class BoardObject : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Handles hit by other objects, such as boosters.
+    /// </summary>
     public void HandleHit()
     {
         if(hitHandler != null)
         {
             hitHandler.HandleOnHit();
         }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
+    /// <summary>
+    /// Must be called by other cubes which popped next to this board object.
+    /// </summary>
     public void HandleNearPop()
     {
         if(nearPopHandler != null)
@@ -51,7 +66,10 @@ public class BoardObject : MonoBehaviour
         }
     }
 
-
+    /// <summary>
+    /// Locks/Unlocks the position of this board object.
+    /// </summary>
+    /// <param name="isLocked">If set to <c>true</c> is locked.</param>
     public void SetPositionLock(bool isLocked)
     {
         if(isLocked)
@@ -61,10 +79,13 @@ public class BoardObject : MonoBehaviour
         isPositionLocked = isLocked;
     }
 
+    /// <summary>
+    /// Wobble this board object to give the feedback of "not matched" situation.
+    /// </summary>
     public void Wobble()
     {
         Debug.Log("Wobble");
-        // TODO: Implement wobble animation
+        // TODO: Implement wobble animation, without moving the collider.
     }
 
 

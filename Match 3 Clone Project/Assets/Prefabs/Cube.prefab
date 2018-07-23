@@ -24,8 +24,8 @@ GameObject:
   - component: {fileID: 65341655279907646}
   - component: {fileID: 54904532192154650}
   - component: {fileID: 114369683473961164}
-  - component: {fileID: 114775653540154362}
-  - component: {fileID: 114319329495607824}
+  - component: {fileID: 114026645377244332}
+  - component: {fileID: 114806926560847516}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -115,7 +115,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.009, y: 0.01, z: 0.009}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &114319329495607824
+--- !u!114 &114026645377244332
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -123,7 +123,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1519658181210298}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a9c39a6d3c964818959a2259536a125, type: 3}
+  m_Script: {fileID: 11500000, guid: 419e718135efd4fe99863f1a84278ae7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   cubeColor: 0
@@ -145,7 +145,8 @@ MonoBehaviour:
   GridPosition:
     m_X: 0
     m_Y: 0
---- !u!114 &114775653540154362
+  IsMoveable: 1
+--- !u!114 &114806926560847516
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -153,7 +154,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1519658181210298}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 38eec34b61a24490eb6f4f4f7da3c99e, type: 3}
+  m_Script: {fileID: 11500000, guid: 6643bd33c5fbb4c9db08abf57208b6ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   defaultShape: 0
