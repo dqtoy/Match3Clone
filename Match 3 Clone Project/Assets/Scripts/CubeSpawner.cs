@@ -23,7 +23,7 @@ public class CubeSpawner : Singleton<CubeSpawner>
 
         for(int x = 0; x < boardWidth; x++)
         {
-            // Check to column from top to bottom, mark if neededs
+            // Check the column from top to bottom.
             for(int y = boardHeight - 1; y >= 0; y--)
             {
                 if(board[x,y] == null)

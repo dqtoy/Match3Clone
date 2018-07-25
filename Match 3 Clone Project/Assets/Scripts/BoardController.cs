@@ -12,9 +12,18 @@ public class BoardController : Singleton<BoardController>
     public static readonly int BOMB_MATCH_COUNT = 7;
     public static readonly int DISCOBALL_MATCH_COUNT = 9;
 
+    public enum BoosterType
+    {
+        Rocket, Bomb, DiscoBall
+    }
 
     [SerializeField] int boardWidth;
     [SerializeField] int boardHeight;
+
+    [SerializeField] GameObject rocketPrefab;
+    [SerializeField] GameObject bombPrefab;
+    [SerializeField] GameObject discoBallPrefab;
+
 
     [HideInInspector] public GameObject[] Columns;
 
@@ -125,7 +134,6 @@ public class BoardController : Singleton<BoardController>
         board[boardObject.GridPosition.x, boardObject.GridPosition.y] = null;
     }
 
-
     void SetShapesOfMatchingGroups()
     {
         bool[,] visited = new bool[boardWidth, boardHeight];
@@ -233,6 +241,61 @@ public class BoardController : Singleton<BoardController>
                 }
             }
         }
+    }
+
+    /// <summary>
+    /// Gets the surrounding board objects.
+    /// </summary>
+    /// <returns>The surrounding board objects.</returns>
+    /// <param name="boardObj">Board object.</param>
+    public List<BoardObject> GetSurroundingBoardObjects(BoardObject boardObj)
+    {
+        List<BoardObject> neighbors = new List<BoardObject>();
+        for(int xDelta = -1; xDelta < 2; xDelta++)
+        {
+            for(int yDelta = -1; yDelta < 2; yDelta++)
+            {
+                Vector2Int neighborPos = boardObj.GridPosition.pos + new Vector2Int(xDelta, yDelta);
+                if(IsInsideBoard(neighborPos) &&  board[neighborPos.x, neighborPos.y] != null)
+                {
+                    neighbors.Add(board[neighborPos.x, neighborPos.y]);
+                }
+            }
+        }
+        return neighbors;
+    }
+
+    /// <summary>
+    /// Swaps the board object at that position, with a booster given type.
+    /// </summary>
+    /// <param name="boosterType">Booster type.</param>
+    /// <param name="boardPos">Board position.</param>
+    /// <param name="worldPos">World position.</param>
+
+    public void CreateBoosterAtPosition(BoosterType boosterType, GridCoordinate boardPos, Vector3 worldPos)
+    {
+        BoardObject oldBoardObj = board[boardPos.x, boardPos.y];
+        BoardObject newBoardObj = null;
+        switch(boosterType)
+        {
+            case BoosterType.Rocket:
+                // TODO: Replace this with rocket prefab when ready.
+                newBoardObj = Instantiate(bombPrefab).GetComponent<BoardObject>();
+                break;
+            case BoosterType.Bomb:
+                newBoardObj = Instantiate(bombPrefab).GetComponent<BoardObject>();
+                break;
+            case BoosterType.DiscoBall:
+                // TODO: Replace this with disco ball prefab when ready.
+                newBoardObj = Instantiate(bombPrefab).GetComponent<BoardObject>();
+                break;
+        }
+        newBoardObj.GridPosition = boardPos;
+        newBoardObj.transform.position = worldPos;
+        newBoardObj.transform.SetParent(Columns[boardPos.x].transform);
+        newBoardObj.transform.SetSiblingIndex(boardPos.y);
+
+        AssignToBoard(newBoardObj);
     }
 
     bool IsInsideBoard(int x, int y)

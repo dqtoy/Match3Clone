@@ -20,7 +20,8 @@ public class Cube : BoardObject, IOnClickHandler, IOnHitHandler
     {
         ColorChanger = GetComponent<ColorController>();
         ShapeDrawer = GetComponent<ShapeController>();
-        clickHandler = this;
+        base.clickHandler = this;
+        base.hitHandler = this;
         transform.Rotate(0, 180, 0);
     }
 
@@ -41,24 +42,29 @@ public class Cube : BoardObject, IOnClickHandler, IOnHitHandler
         }
         else
         {
-            if(numTotalCubesInCombo >= BoardController.DISCOBALL_MATCH_COUNT)
-            {
-                Debug.Log("Turn into Disco Ball");
-            }
-            else if(numTotalCubesInCombo >= BoardController.BOMB_MATCH_COUNT)
-            {
-                Debug.Log("Turn into Bomb");
-            }
-            else if(numTotalCubesInCombo >= BoardController.ROCKET_MATCH_COUNT)
-            {
-                Debug.Log("Turn into Rocket");
-            }
-
             foreach(Cube matchingCube in matchingCubes)
             {
                 matchingCube.HandleOnHit();
             }
             DestroySelf();
+
+            if(numTotalCubesInCombo >= BoardController.DISCOBALL_MATCH_COUNT)
+            {
+                BoardController.Instance.CreateBoosterAtPosition(
+                    BoardController.BoosterType.Bomb, GridPosition, transform.position);
+            }
+            else if(numTotalCubesInCombo >= BoardController.BOMB_MATCH_COUNT)
+            {
+                BoardController.Instance.CreateBoosterAtPosition(
+                    BoardController.BoosterType.Bomb, GridPosition, transform.position);
+            }
+            else if(numTotalCubesInCombo >= BoardController.ROCKET_MATCH_COUNT)
+            {
+                BoardController.Instance.CreateBoosterAtPosition(
+                    BoardController.BoosterType.Bomb, GridPosition, transform.position);
+            }
+
+
         }
 
         BoardController.Instance.OnClickHandled();
@@ -66,11 +72,14 @@ public class Cube : BoardObject, IOnClickHandler, IOnHitHandler
 
     public void HandleOnHit()
     {
+        if(handledHitThisTurn) return;
+
         DestroySelf();
     }
 
     public void DestroySelf()
     {
+        handledHitThisTurn = true;
         BoardController.Instance.NotifyDestroyedObject(this);
         Destroy(gameObject);
     }

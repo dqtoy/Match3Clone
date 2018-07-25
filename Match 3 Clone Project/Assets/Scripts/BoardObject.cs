@@ -13,15 +13,16 @@ public class BoardObject : MonoBehaviour
     protected IOnHitHandler hitHandler;
     protected IOnNearPopHandler nearPopHandler;
 
-    Vector3 savedPosition;
-    bool isPositionLocked;
+    protected bool handledHitThisTurn;
 
+    Vector3 savedWorldPosition;
+    bool isPositionLocked;
 
     void LateUpdate()
     {
         if(isPositionLocked)
         {
-            transform.position = savedPosition;
+            transform.position = savedWorldPosition;
         }
     }
 
@@ -49,10 +50,6 @@ public class BoardObject : MonoBehaviour
         {
             hitHandler.HandleOnHit();
         }
-        else
-        {
-            Destroy(gameObject);
-        }
     }
 
     /// <summary>
@@ -74,7 +71,7 @@ public class BoardObject : MonoBehaviour
     {
         if(isLocked)
         {
-            savedPosition = transform.position;
+            savedWorldPosition = transform.position;
         }
         isPositionLocked = isLocked;
     }
