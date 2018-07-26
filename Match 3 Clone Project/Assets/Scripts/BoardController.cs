@@ -274,13 +274,12 @@ public class BoardController : Singleton<BoardController>
 
     public void CreateBoosterAtPosition(BoosterType boosterType, GridCoordinate boardPos, Vector3 worldPos)
     {
-        BoardObject oldBoardObj = board[boardPos.x, boardPos.y];
         BoardObject newBoardObj = null;
         switch(boosterType)
         {
             case BoosterType.Rocket:
                 // TODO: Replace this with rocket prefab when ready.
-                newBoardObj = Instantiate(bombPrefab).GetComponent<BoardObject>();
+                newBoardObj = Instantiate(rocketPrefab).GetComponent<BoardObject>();
                 break;
             case BoosterType.Bomb:
                 newBoardObj = Instantiate(bombPrefab).GetComponent<BoardObject>();

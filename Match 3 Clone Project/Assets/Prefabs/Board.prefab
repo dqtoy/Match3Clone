@@ -53,7 +53,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boardWidth: 6
   boardHeight: 7
-  rocketPrefab: {fileID: 0}
+  rocketPrefab: {fileID: 1560919504429222, guid: de5e07e350f6d4d9eba08f1bb2150c67,
+    type: 2}
   bombPrefab: {fileID: 1747476985432570, guid: 04264e205b95542ebbefb3b3bc68f682, type: 2}
   discoBallPrefab: {fileID: 0}
   Columns: []

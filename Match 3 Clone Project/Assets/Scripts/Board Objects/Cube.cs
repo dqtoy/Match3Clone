@@ -61,7 +61,7 @@ public class Cube : BoardObject, IOnClickHandler, IOnHitHandler
             else if(numTotalCubesInCombo >= BoardController.ROCKET_MATCH_COUNT)
             {
                 BoardController.Instance.CreateBoosterAtPosition(
-                    BoardController.BoosterType.Bomb, GridPosition, transform.position);
+                    BoardController.BoosterType.Rocket, GridPosition, transform.position);
             }
 
 
