@@ -24,6 +24,8 @@ public class Bomb : BoardObject, IOnClickHandler, IOnHitHandler
 
     void Expload()
     {
+        BoosterController.Instance.NotifyBoosterActivated();
+
         handledHitThisTurn = true;
         foreach(BoardObject boardObj in BoardController.Instance.GetSurroundingBoardObjects(this))
         {
@@ -31,6 +33,7 @@ public class Bomb : BoardObject, IOnClickHandler, IOnHitHandler
         }
 
         BoardController.Instance.NotifyDestroyedObject(this);
+        BoosterController.Instance.NotifyBoosterDeactivated();
         Destroy(gameObject);
     }
 	

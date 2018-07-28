@@ -7,13 +7,13 @@ public class RocketHalf : MonoBehaviour
 
     float lifetime = 0.5f;
     Vector2 speed;
-    bool fired;
+    bool hasFired;
     float timeElapsedSinceFire;
 
 
     void Update()
     {
-        if(fired)
+        if(hasFired)
         {
             timeElapsedSinceFire += Time.deltaTime;
             transform.Translate(speed * Time.deltaTime);
@@ -29,7 +29,7 @@ public class RocketHalf : MonoBehaviour
     public void FireWithSpeed(Vector2 speed)
     {
         this.speed = speed;
-        fired = true;
+        hasFired = true;
     }
 
     public void SetRocketController(Rocket rocketController)
@@ -39,6 +39,7 @@ public class RocketHalf : MonoBehaviour
 
     void OnTriggerEnter(Collider col)
     {
+        if(!hasFired) return;
         BoardObject boardObject = col.GetComponent<BoardObject>();
         if(boardObject != null)
         {

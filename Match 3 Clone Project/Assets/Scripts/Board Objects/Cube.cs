@@ -28,7 +28,7 @@ public class Cube : BoardObject, IOnClickHandler, IOnHitHandler
 
     public void HandleOnClick()
     {
-        List<Cube> matchingCubes = BoardController.Instance.GetMatchingCubes(this);
+        List<Cube> matchingCubes = AlgoUtils.GetMatchingCubes(this);
 
         /* Note that matching cubes are not including this cube itself.
          * Therefore we need to add 1 one the count,
@@ -36,7 +36,7 @@ public class Cube : BoardObject, IOnClickHandler, IOnHitHandler
          */
         int numTotalCubesInCombo = matchingCubes.Count + 1;
 
-        if(numTotalCubesInCombo < BoardController.MIN_MATCH_COUNT)
+        if(numTotalCubesInCombo < Constants.MIN_MATCH_COUNT)
         {
             Wobble();
         }
@@ -48,20 +48,20 @@ public class Cube : BoardObject, IOnClickHandler, IOnHitHandler
             }
             DestroySelf();
 
-            if(numTotalCubesInCombo >= BoardController.DISCOBALL_MATCH_COUNT)
+            if(numTotalCubesInCombo >= Constants.DISCOBALL_MATCH_COUNT)
             {
-                BoardController.Instance.CreateBoosterAtPosition(
-                    BoardController.BoosterType.Bomb, GridPosition, transform.position);
+                BoosterController.Instance.CreateBoosterAtPosition(
+                    BoosterController.BoosterType.Bomb, GridPosition, transform.position);
             }
-            else if(numTotalCubesInCombo >= BoardController.BOMB_MATCH_COUNT)
+            else if(numTotalCubesInCombo >= Constants.BOMB_MATCH_COUNT)
             {
-                BoardController.Instance.CreateBoosterAtPosition(
-                    BoardController.BoosterType.Bomb, GridPosition, transform.position);
+                BoosterController.Instance.CreateBoosterAtPosition(
+                    BoosterController.BoosterType.Bomb, GridPosition, transform.position);
             }
-            else if(numTotalCubesInCombo >= BoardController.ROCKET_MATCH_COUNT)
+            else if(numTotalCubesInCombo >= Constants.ROCKET_MATCH_COUNT)
             {
-                BoardController.Instance.CreateBoosterAtPosition(
-                    BoardController.BoosterType.Rocket, GridPosition, transform.position);
+                BoosterController.Instance.CreateBoosterAtPosition(
+                    BoosterController.BoosterType.Rocket, GridPosition, transform.position);
             }
 
 

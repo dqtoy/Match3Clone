@@ -7,12 +7,11 @@ public class Rocket : BoardObject, IOnClickHandler, IOnHitHandler
     [SerializeField] GameObject rightHalf;
     [SerializeField] float rocketSpeed = 50f;
 
-    bool fired;
     int numRocketHalvesLeftBoard;
 
     RocketHalf leftRocketHalf;
     RocketHalf rightRocketHalf;
-    Collider slotCollider;
+    BoxCollider slotCollider;
 
 
     void Awake()
@@ -21,7 +20,19 @@ public class Rocket : BoardObject, IOnClickHandler, IOnHitHandler
         base.hitHandler = this;
         leftRocketHalf = leftHalf.GetComponent<RocketHalf>();
         rightRocketHalf = rightHalf.GetComponent<RocketHalf>();
-        slotCollider = GetComponent<Collider>();
+        slotCollider = GetComponent<BoxCollider>();
+
+        bool isHorizontal = Random.Range(0f, 1f) > 0.5f;
+        if(isHorizontal)
+        {
+            float rotateAngleInDegrees = -90;
+            Vector3 newColliderSize = Quaternion.AngleAxis(rotateAngleInDegrees, Vector3.forward) * slotCollider.size;
+            // Box collider shouldn't have any negative size values.
+            newColliderSize = new Vector3(Mathf.Abs(newColliderSize.x)
+                                          , Mathf.Abs(newColliderSize.y), Mathf.Abs(newColliderSize.z));
+            transform.Rotate(0, 0, rotateAngleInDegrees);
+            slotCollider.size = newColliderSize;
+        }
     }
 
 
@@ -38,6 +49,8 @@ public class Rocket : BoardObject, IOnClickHandler, IOnHitHandler
 
     void Fire()
     {
+        BoosterController.Instance.NotifyBoosterActivated();
+
         slotCollider.enabled = false;
         handledHitThisTurn = true;
 
@@ -53,7 +66,7 @@ public class Rocket : BoardObject, IOnClickHandler, IOnHitHandler
         if(numRocketHalvesLeftBoard >= 2)
         {
             BoardController.Instance.NotifyDestroyedObject(this);
-            BoardController.Instance.OnClickHandled();
+            BoosterController.Instance.NotifyBoosterDeactivated();
             Destroy(gameObject);
         }
     }

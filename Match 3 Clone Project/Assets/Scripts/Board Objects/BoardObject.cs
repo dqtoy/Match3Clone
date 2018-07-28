@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class BoardObject : MonoBehaviour 
 {
     
@@ -69,11 +70,15 @@ public class BoardObject : MonoBehaviour
     /// <param name="isLocked">If set to <c>true</c> is locked.</param>
     public void SetPositionLock(bool isLocked)
     {
+        Rigidbody ourRigidbody = GetComponent<Rigidbody>();
         if(isLocked)
         {
             savedWorldPosition = transform.position;
+            ourRigidbody.velocity = Vector3.zero;
+
         }
         isPositionLocked = isLocked;
+        ourRigidbody.useGravity = !isLocked;
     }
 
     /// <summary>
