@@ -190,7 +190,20 @@ public class BoardController : Singleton<BoardController>
         return neighbors;
     }
 
+    public List<Cube> GetAllCubesWithColor(ColorController.ToonColor color)
+    {
+        List<Cube> cubes = new List<Cube>();
+        foreach(BoardObject boardObj in board)
+        {
+            Cube currentCube = boardObj as Cube;
+            if(currentCube != null && currentCube.ColorChanger.CurrentColor == color)
+            {
+                cubes.Add(currentCube);
+            }
+        }
+        return cubes;
 
+    }
 
     public BoardObject GetBoardObjectAt(int xPos, int yPos)
     {

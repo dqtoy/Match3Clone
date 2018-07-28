@@ -6,12 +6,12 @@
 public class ColorController : MonoBehaviour 
 {
 
-    public enum CubeColor
+    public enum ToonColor
     {
         Blue, Green, Red, Yellow, COUNT
     }
 
-    public CubeColor cubeColor;
+    public ToonColor CurrentColor;
 
     [SerializeField]
     Texture2D blueColorTexture;
@@ -35,23 +35,23 @@ public class ColorController : MonoBehaviour
     /// Changes the color of the material that this instance has.
     /// </summary>
     /// <param name="color">Color.</param>
-    public void SetColor(CubeColor color)
+    public void SetColor(ToonColor color)
     {
         Texture2D colorTexture = null;
-        cubeColor = color;
+        CurrentColor = color;
 
         switch(color)
         {
-            case CubeColor.Blue:
+            case ToonColor.Blue:
                 colorTexture = blueColorTexture;
                 break;
-            case CubeColor.Green:
+            case ToonColor.Green:
                 colorTexture = greenColorTexture;
                 break;
-            case CubeColor.Red:
+            case ToonColor.Red:
                 colorTexture = redColorTexture;
                 break;
-            case CubeColor.Yellow:
+            case ToonColor.Yellow:
                 colorTexture = yellowColorTexture;
                 break;
         }
@@ -64,8 +64,8 @@ public class ColorController : MonoBehaviour
     /// </summary>
     public void AssignRandomColor()
     {
-        int randomIndex = Random.Range(0, (int) CubeColor.COUNT);
-        CubeColor randomColor = (CubeColor)randomIndex;
+        int randomIndex = Random.Range(0, (int) ToonColor.COUNT);
+        ToonColor randomColor = (ToonColor)randomIndex;
         SetColor(randomColor);
     }
 }

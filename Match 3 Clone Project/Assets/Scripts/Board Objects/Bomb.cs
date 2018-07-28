@@ -13,7 +13,6 @@ public class Bomb : BoardObject, IOnClickHandler, IOnHitHandler
     public void HandleOnClick()
     {
         Expload();
-        BoardController.Instance.OnClickHandled();
     }
 
     public void HandleOnHit()

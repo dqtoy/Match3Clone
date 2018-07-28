@@ -8,7 +8,6 @@ using System.Collections.Generic;
 public class Cube : BoardObject, IOnClickHandler, IOnHitHandler 
 {
 
-
     [HideInInspector] 
     public ColorController ColorChanger { get; private set; }
 
@@ -50,21 +49,17 @@ public class Cube : BoardObject, IOnClickHandler, IOnHitHandler
 
             if(numTotalCubesInCombo >= Constants.DISCOBALL_MATCH_COUNT)
             {
-                BoosterController.Instance.CreateBoosterAtPosition(
-                    BoosterController.BoosterType.Bomb, GridPosition, transform.position);
+                BoosterController.Instance.CreateDiscoBallAtPosition(GridPosition, transform.position
+                                                                     , ColorChanger.CurrentColor);
             }
             else if(numTotalCubesInCombo >= Constants.BOMB_MATCH_COUNT)
             {
-                BoosterController.Instance.CreateBoosterAtPosition(
-                    BoosterController.BoosterType.Bomb, GridPosition, transform.position);
+                BoosterController.Instance.CreateBombAtPosition(GridPosition, transform.position);
             }
             else if(numTotalCubesInCombo >= Constants.ROCKET_MATCH_COUNT)
             {
-                BoosterController.Instance.CreateBoosterAtPosition(
-                    BoosterController.BoosterType.Rocket, GridPosition, transform.position);
+                BoosterController.Instance.CreateRocketAtPosition(GridPosition, transform.position);
             }
-
-
         }
 
         BoardController.Instance.OnClickHandled();

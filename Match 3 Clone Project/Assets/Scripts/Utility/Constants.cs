@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-public class Constants 
+﻿public class Constants 
 {
     public static readonly int MIN_MATCH_COUNT = 2;
     public static readonly int ROCKET_MATCH_COUNT = 5;

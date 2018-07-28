@@ -12,34 +12,48 @@ public class BoosterController : Singleton<BoosterController>
     [SerializeField] GameObject bombPrefab;
     [SerializeField] GameObject discoBallPrefab;
 
+    [HideInInspector]
     public int CurrentlyActiveBoosters;
 
+
     /// <summary>
-    /// Swaps the board object at that position, with a booster given type.
+    /// Creates a rocket booster at given position.
     /// </summary>
-    /// <param name="boosterType">Booster type.</param>
     /// <param name="boardPos">Board position.</param>
     /// <param name="worldPos">World position.</param>
-    public void CreateBoosterAtPosition(BoosterType boosterType, GridCoordinate boardPos, Vector3 worldPos)
+    public void CreateRocketAtPosition(GridCoordinate boardPos, Vector3 worldPos)
     {
-        BoardObject newBoardObj = null;
-        switch(boosterType)
-        {
-            case BoosterType.Rocket:
-                // TODO: Replace this with rocket prefab when ready.
-                newBoardObj = Instantiate(rocketPrefab).GetComponent<BoardObject>();
-                break;
-            case BoosterType.Bomb:
-                newBoardObj = Instantiate(bombPrefab).GetComponent<BoardObject>();
-                break;
-            case BoosterType.DiscoBall:
-                // TODO: Replace this with disco ball prefab when ready.
-                newBoardObj = Instantiate(bombPrefab).GetComponent<BoardObject>();
-                break;
-        }
+        BoardObject newBoardObj = Instantiate(rocketPrefab).GetComponent<BoardObject>();
         newBoardObj.GridPosition = boardPos;
         newBoardObj.transform.position = worldPos;
+        BoardController.Instance.AssignToBoard(newBoardObj);
+    }
 
+    /// <summary>
+    /// Creates bomb booster at given position.
+    /// </summary>
+    /// <param name="boardPos">Board position.</param>
+    /// <param name="worldPos">World position.</param>
+    public void CreateBombAtPosition(GridCoordinate boardPos, Vector3 worldPos)
+    {
+        BoardObject newBoardObj = Instantiate(bombPrefab).GetComponent<BoardObject>();
+        newBoardObj.GridPosition = boardPos;
+        newBoardObj.transform.position = worldPos;
+        BoardController.Instance.AssignToBoard(newBoardObj);
+    }
+
+    /// <summary>
+    /// Creates a disco ball booster at position.
+    /// </summary>
+    /// <param name="boardPos">Board position.</param>
+    /// <param name="worldPos">World position.</param>
+    /// <param name="color">Color.</param>
+    public void CreateDiscoBallAtPosition(GridCoordinate boardPos, Vector3 worldPos, ColorController.ToonColor color)
+    {
+        BoardObject newBoardObj = Instantiate(discoBallPrefab).GetComponent<BoardObject>();
+        newBoardObj.GetComponent<ColorController>().SetColor(color);
+        newBoardObj.GridPosition = boardPos;
+        newBoardObj.transform.position = worldPos;
         BoardController.Instance.AssignToBoard(newBoardObj);
     }
 

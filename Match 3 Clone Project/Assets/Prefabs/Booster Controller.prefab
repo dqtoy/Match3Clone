@@ -54,4 +54,6 @@ MonoBehaviour:
   rocketPrefab: {fileID: 1560919504429222, guid: de5e07e350f6d4d9eba08f1bb2150c67,
     type: 2}
   bombPrefab: {fileID: 1747476985432570, guid: 04264e205b95542ebbefb3b3bc68f682, type: 2}
-  discoBallPrefab: {fileID: 0}
+  discoBallPrefab: {fileID: 1758729766827936, guid: 86c690b83e6c64f9b9cc73ecf85ff4ac,
+    type: 2}
+  CurrentlyActiveBoosters: 0

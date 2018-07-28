@@ -39,7 +39,7 @@ public static class AlgoUtils
                 Cube cubeBeingVisited = BoardController.Instance.GetBoardObjectAt(neighborPos.x, neighborPos.y) as Cube;
                 if(!memoVisited[neighborPos.x, neighborPos.y]
                    && cubeBeingVisited != null
-                   && cubeBeingVisited.ColorChanger.cubeColor == cube.ColorChanger.cubeColor)
+                   && cubeBeingVisited.ColorChanger.CurrentColor == cube.ColorChanger.CurrentColor)
                 {
                     memoNeighbours.Add(cubeBeingVisited);
                     GetMatchingNeighborsRecursive(cubeBeingVisited, ref memoNeighbours, ref memoVisited);
