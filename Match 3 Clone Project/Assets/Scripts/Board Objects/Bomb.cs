@@ -4,8 +4,9 @@ public class Bomb : BoardObject, IOnClickHandler, IOnHitHandler
 {
 
 
-    void Awake() 
+    protected override void Awake() 
     {
+        base.Awake();
         base.clickHandler = this;
         base.hitHandler = this;
     }

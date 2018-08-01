@@ -18,6 +18,16 @@ public class BoardObject : MonoBehaviour
 
     Vector3 savedWorldPosition;
     bool isPositionLocked;
+    GroundCheck groundCheck;
+
+
+    protected virtual void Awake()
+    {
+        if(groundCheck == null)
+        {
+            groundCheck = gameObject.AddComponent<GroundCheck>();
+        }
+    }
 
     void LateUpdate()
     {
@@ -77,6 +87,10 @@ public class BoardObject : MonoBehaviour
             ourRigidbody.velocity = Vector3.zero;
 
         }
+        else
+        {
+            groundCheck.IsGrounded = false;    
+        }
         isPositionLocked = isLocked;
         ourRigidbody.useGravity = !isLocked;
     }
@@ -90,5 +104,14 @@ public class BoardObject : MonoBehaviour
         // TODO: Implement wobble animation, without moving the collider.
     }
 
+    public bool IsSettled()
+    {
+        return groundCheck.IsGrounded;
+    }
+
+    public Vector3 GridToWorldPos()
+    {
+        return new Vector3(GridPosition.x, GridPosition.y, 0);
+    }
 
 }

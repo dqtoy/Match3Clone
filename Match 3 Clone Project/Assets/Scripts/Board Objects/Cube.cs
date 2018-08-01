@@ -15,8 +15,9 @@ public class Cube : BoardObject, IOnClickHandler, IOnHitHandler
     public ShapeController ShapeDrawer { get; private set; }
 
    
-    void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         ColorChanger = GetComponent<ColorController>();
         ShapeDrawer = GetComponent<ShapeController>();
         base.clickHandler = this;

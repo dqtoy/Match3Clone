@@ -96,7 +96,7 @@ Rigidbody:
   m_GameObject: {fileID: 1519658181210298}
   serializedVersion: 2
   m_Mass: 1
-  m_Drag: 0
+  m_Drag: 3
   m_AngularDrag: 0
   m_UseGravity: 1
   m_IsKinematic: 0
@@ -126,7 +126,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 419e718135efd4fe99863f1a84278ae7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cubeColor: 0
+  CurrentColor: 0
   blueColorTexture: {fileID: 2800000, guid: 0d646ec84e2454a87a9fc01cc7b1d83b, type: 3}
   greenColorTexture: {fileID: 2800000, guid: 842de5983c0174a7eb2a615f958e713b, type: 3}
   redColorTexture: {fileID: 2800000, guid: 5261dad6be1ac4db5be95d883453726b, type: 3}

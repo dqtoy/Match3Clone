@@ -7,8 +7,9 @@ public class DiscoBall : BoardObject, IOnClickHandler, IOnHitHandler
     public ColorController ColorChanger { get; private set; }
 
 
-    void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         ColorChanger = GetComponent<ColorController>();
         base.clickHandler = this;
         base.hitHandler = this;

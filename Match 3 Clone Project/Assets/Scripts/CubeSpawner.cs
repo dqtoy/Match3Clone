@@ -5,7 +5,7 @@
 /// </summary>
 public class CubeSpawner : Singleton<CubeSpawner>
 {
-    static readonly float HEIGHT_OFFSET = 1.75f;
+    static readonly float HEIGHT_OFFSET = 8.75f;
 
     [SerializeField] GameObject cubePrefab;
 

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
-using System;
+using System.Collections;
 
 /// <summary>
 /// Class that is responsible for events happening on game board.
@@ -17,7 +17,7 @@ public class BoardController : Singleton<BoardController>
     [HideInInspector] public GameObject[] Columns;
 
     BoardObject[,] board;
-
+    
 
     public override void Awake()
     {
@@ -74,7 +74,25 @@ public class BoardController : Singleton<BoardController>
 
         SetPositionLockOfAllBoardObjects(false);
 
-        // TODO: Wait for cubes to settle
+        StartCoroutine(WaitForObjectsToSettleThenContinue());
+    }
+
+
+    IEnumerator WaitForObjectsToSettleThenContinue()
+    {
+        bool allSettled = false;
+        while(!allSettled)
+        {
+            allSettled = true;
+            foreach(BoardObject boardObj in board)
+            {
+                if(!boardObj.IsSettled())
+                {
+                    allSettled = false;
+                    yield return null;
+                }
+            }
+        }
 
         // Changes happened on the board, shapes must be updated.
         SetShapesOfMatchingGroups();
@@ -145,7 +163,7 @@ public class BoardController : Singleton<BoardController>
                 BoardObject currentObj = board[x, y];
                 if(currentObj == null || !currentObj.IsMoveable) continue;
 
-                while(IsInsideBoard(currentObj.GridPosition.pos + Vector2Int.down) 
+                while(IsInsideBoard(currentObj.GridPosition.pos + Vector2Int.down)
                       && board[currentObj.GridPosition.x, currentObj.GridPosition.y - 1] == null)
                 {
                     MoveBoardObjectDown(currentObj);
@@ -181,7 +199,7 @@ public class BoardController : Singleton<BoardController>
             for(int yDelta = -1; yDelta < 2; yDelta++)
             {
                 Vector2Int neighborPos = boardObj.GridPosition.pos + new Vector2Int(xDelta, yDelta);
-                if(IsInsideBoard(neighborPos) &&  board[neighborPos.x, neighborPos.y] != null)
+                if(IsInsideBoard(neighborPos) && board[neighborPos.x, neighborPos.y] != null)
                 {
                     neighbors.Add(board[neighborPos.x, neighborPos.y]);
                 }
@@ -211,10 +229,21 @@ public class BoardController : Singleton<BoardController>
         {
             return board[xPos, yPos];
         }
-        else 
+        else
         {
             return null;
         }
+    }
+
+    public Bounds GetBoundingBox()
+    {
+        Bounds bounds = new Bounds();
+        foreach(BoardObject boardObj in board)
+        {
+            Collider col = boardObj.GetComponent<Collider>();
+            bounds.Encapsulate(col.bounds);
+        }
+        return bounds;
     }
 
     public bool IsInsideBoard(int x, int y)

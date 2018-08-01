@@ -14,8 +14,9 @@ public class Rocket : BoardObject, IOnClickHandler, IOnHitHandler
     BoxCollider slotCollider;
 
 
-    void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         base.clickHandler = this;
         base.hitHandler = this;
         leftRocketHalf = leftHalf.GetComponent<RocketHalf>();
