@@ -106,7 +106,7 @@ public class BoardObject : MonoBehaviour
 
     public bool IsSettled()
     {
-        return groundCheck.IsGrounded;
+        return !IsMoveable || groundCheck.IsGrounded;
     }
 
     public Vector3 GridToWorldPos()

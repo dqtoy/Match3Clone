@@ -24,9 +24,8 @@ public class ShapeController : MonoBehaviour
 
     void Awake()
     {
-        m_renderer = GetComponent<MeshRenderer>();
-        m_renderer.material.EnableKeyword("_NORMALMAP");
-        SetShape(defaultShape);
+        GetComponent<MeshRenderer>().sharedMaterial.EnableKeyword("_NORMALMAP");
+        SetShapeToDefault();
     }
 
     public void SetShape(Shape shape)
@@ -41,7 +40,11 @@ public class ShapeController : MonoBehaviour
                 normalMapToUse = rocketNormalMap;
                 break;
         }
-        m_renderer.material.SetTexture("_BumpMap", normalMapToUse);
+
+        Renderer ourRenderer = GetComponent<MeshRenderer>();
+        Material tempMaterial = new Material(ourRenderer.sharedMaterial);
+        tempMaterial.SetTexture("_BumpMap", normalMapToUse);
+        ourRenderer.sharedMaterial = tempMaterial;
     }
 
     public void SetShapeToDefault()

@@ -17,7 +17,7 @@ public class BoardController : Singleton<BoardController>
     [HideInInspector] public GameObject[] Columns;
 
     BoardObject[,] board;
-    
+
 
     public override void Awake()
     {
@@ -33,10 +33,12 @@ public class BoardController : Singleton<BoardController>
     /// <summary>
     /// Initializes necessary containers for board objects.
     /// </summary>
-    void InitBoard()
+    public void InitBoard()
     {
         board = new BoardObject[BoardWidth, BoardHeight];
         Columns = new GameObject[BoardWidth];
+
+        ClearBoard();
 
         Vector3 colPos;
         for(int col = 0; col < BoardWidth; col++)
@@ -45,6 +47,22 @@ public class BoardController : Singleton<BoardController>
             Columns[col].transform.SetParent(transform);
             colPos = transform.position + Vector3.left * ((BoardWidth - 1) / 2f - col);
             Columns[col].transform.position = colPos;
+        }
+    }
+
+    public void ClearBoard()
+    {
+        // Destroy all existing columns first
+        foreach(Transform child in transform.GetComponentsInChildren<Transform>())
+        {
+            if(child != null && !child.Equals(transform))
+            {
+#if UNITY_EDITOR
+                DestroyImmediate(child.gameObject);
+#else
+                    Destroy(child.gameObject);
+#endif
+            }
         }
     }
 
@@ -69,6 +87,7 @@ public class BoardController : Singleton<BoardController>
     public void OnClickHandled()
     {
         if(BoosterController.Instance.CurrentlyActiveBoosters != 0) return;
+
         UpdateGridPositionsOfFallingObjects();
         CubeSpawner.Instance.SpawnNeededCubes(ref board);
 

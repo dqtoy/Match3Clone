@@ -23,14 +23,6 @@ public class ColorController : MonoBehaviour
     Texture2D yellowColorTexture;
 
 
-    Renderer m_Renderer;
-
-    void Awake()
-    {
-        m_Renderer = GetComponent<Renderer>();
-    }
-
-
     /// <summary>
     /// Changes the color of the material that this instance has.
     /// </summary>
@@ -56,7 +48,11 @@ public class ColorController : MonoBehaviour
                 break;
         }
 
-        m_Renderer.material.SetTexture("_MainTex", colorTexture);
+
+        Renderer ourRenderer = GetComponent<MeshRenderer>();
+        Material tempMaterial = new Material(ourRenderer.sharedMaterial);
+        tempMaterial.SetTexture("_MainTex", colorTexture);
+        ourRenderer.sharedMaterial = tempMaterial;
     }
 
     /// <summary>

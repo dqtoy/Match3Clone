@@ -7,7 +7,8 @@ public class CubeSpawner : Singleton<CubeSpawner>
 {
     static readonly float HEIGHT_OFFSET = 8.75f;
 
-    [SerializeField] GameObject cubePrefab;
+    public GameObject cubePrefab;
+
 
     /// <summary>
     /// Check if there are cubes needed to be spawn, spawn them if there are.
@@ -15,12 +16,12 @@ public class CubeSpawner : Singleton<CubeSpawner>
     /// <param name="board">Board.</param>
     public void SpawnNeededCubes(ref BoardObject[,] board)
     {
-        // Determine cubes that have to be spawned.
         int boardWidth = board.GetLength(0);        
         int boardHeight = board.GetLength(1);
 
         int[] cubeAmountsForColums = new int[boardWidth];
 
+        // Determine cubes that have to be spawned.
         for(int x = 0; x < boardWidth; x++)
         {
             // Check the column from top to bottom.
@@ -57,7 +58,7 @@ public class CubeSpawner : Singleton<CubeSpawner>
     }
 
     /// <summary>
-    /// Spawns a cube and randomly color it.
+    /// Spawns a cube and randomly colors it.
     /// </summary>
     /// <param name="worldPos">World position.</param>
     /// <param name="gridPos">Grid position.</param>
