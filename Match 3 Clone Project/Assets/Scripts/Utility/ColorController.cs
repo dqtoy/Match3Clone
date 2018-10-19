@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 /// <summary>
 /// Controls the color of the material that this script is attached to.
@@ -64,4 +64,5 @@ public class ColorController : MonoBehaviour
         ToonColor randomColor = (ToonColor)randomIndex;
         SetColor(randomColor);
     }
+    
 }
